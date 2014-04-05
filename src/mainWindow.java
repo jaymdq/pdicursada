@@ -565,7 +565,7 @@ public class mainWindow {
 //-- Ejercicio 5 ----------------------------------------------------------------------------------------------------------
 	
 	protected void cargarImagen5() {
-		JFileChooser fc = new JFileChooser();
+		/*JFileChooser fc = new JFileChooser();
 		fc.setDialogTitle("Abrir archivo .bmp");
 		fc.setFileFilter(new FiltroBmp());
 		int returnVal = fc.showOpenDialog(null);
@@ -579,16 +579,25 @@ public class mainWindow {
 			im5trabajo = new ImagePlus(file.getAbsolutePath());
 			Imagen5.setIcon(new ImageIcon(im5.getImage()));
 			
-		}
+		}*/
+		
+		im5 = new ImagePlus("prueba.jpg");
+		im5trabajo = new ImagePlus("prueba.jpg");
+		Imagen5.setIcon(new ImageIcon(im5.getImage()));
+		
+
 	}
 
 	protected void resetear5() {
-		im5trabajo.setImage(im5.getImage());
-		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
+		/*im5trabajo.setImage(im5.getImage());
+		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));*/
+		
+		Histograma hist = new Histograma(im5);
+		Imagen5.setIcon(new ImageIcon(hist.getHistograma().getImage()));
 	}
 	
 	protected void procesar5() {
-		
+		/*
 
 		ImagePlus im = null;
 		im = NewImage.createImage("Imagen5", 640, 480, 1, 8, 0);
@@ -625,7 +634,16 @@ public class mainWindow {
 		
 		im5trabajo = im;
 		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
+		*/
 		
+		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(5, new int[][]{
+				{1, 1, 1, 1, 1}, 
+				{1, 1, 1, 1, 1}, 
+				{1, 1, 1, 1, 1}, 
+				{1, 1, 1, 1, 1}, 
+				{1, 1, 1, 1, 1}}));
+		
+		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
 		
 	}
 

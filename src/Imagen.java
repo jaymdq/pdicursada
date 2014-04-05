@@ -8,19 +8,24 @@ public class Imagen {
 	public static void setPixel (ImagePlus im, int x, int y, int color){
 		
 		im.getProcessor().setColor(color);
-		im.getProcessor().drawDot(x, y);
+		im.getProcessor().drawDot(y, x);
+		
+//		if (x == 223 && y == 236){
+//			System.out.println("Stop");
+//			int pix = getPixel(im, x, y);
+//		}
 		
 	}
 	
 	// Obtener la intensidad de un pixel (x,y)
 	public static int getPixel (ImagePlus im, int x, int y){
 		
-		return (int) im.getProcessor().getPixelValue(x, y);
+		return (int) im.getProcessor().getPixelValue(y, x);
 		
 	}
 	
 	// Aplicar un filtro a una imagen completa
-	public ImagePlus aplicarFiltro(ImagePlus im, MatrizConvolucion matriz){
+	public static ImagePlus aplicarFiltro(ImagePlus im, MatrizConvolucion matriz){
 		
 		int ancho = im.getWidth();
 		int alto = im.getHeight();
@@ -30,10 +35,12 @@ public class Imagen {
 		ImagePlus nueva = NewImage.createImage("nueva", ancho, alto, 1, 8, 0);
 		
 		// Recorrer imagen (excepto bordes)
-		for (int i = radio; i <= alto - radio; i++){
-			for (int j = radio; j <= ancho - radio; j++){
+		for (int i = radio; i < alto - radio; i++){
+			for (int j = radio; j < ancho - radio; j++){
+				
 				int color = aplicarFiltro(im, matriz, i, j);
 				setPixel(nueva, i, j, color);
+				
 			}
 		}
 		
@@ -47,7 +54,7 @@ public class Imagen {
 		int tam = matriz.getTam();
 		int radio = matriz.getRadio();
 		int acumulador = 0;
-		int normalizacion = 9;
+		int normalizacion = tam * tam;
 		
 		// Recorrer matriz de convolucion
 		for (int x = 0; x < tam; x++){
