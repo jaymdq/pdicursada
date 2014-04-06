@@ -28,7 +28,7 @@ public class MatrizImagen {
 		return img[i][j];
 	}
 	
-	public ImagePlus getNormalizado(){
+	public ImagePlus getNormalizadoLineal(){
 		ImagePlus norm = NewImage.createImage("norm", ancho, alto, 1, 8, 0);
 		
 		// Obtener maximo / minimo
@@ -50,10 +50,37 @@ public class MatrizImagen {
 		
 		for (int i = 0; i < alto; i++){
 			for (int j = 0; j < ancho; j++){
-				int color = 0; 
-				if (get(i, j) != 0){
-					color = 255 * (get(i, j) - min) / (max - min);
+				int color = 255 * (get(i, j) - min) / (max - min);
+				Imagen.setPixel(norm, i, j, color);
+			}
+		}
+		
+		return norm;
+	}
+	
+	public ImagePlus getNormalizadoAbsoluto(){
+		ImagePlus norm = NewImage.createImage("norm", ancho, alto, 1, 8, 0);
+		
+		// Obtener maximo / minimo
+		int max = 0, min = 0;
+		for(int[] i : img){
+			for(int j : i){
+				if (j > max){
+					max = j;
 				}
+				
+				if (j < min){
+					min = j;
+				}
+			}
+		}
+		
+		System.out.println("Max:" + max);
+		System.out.println("Min" + min);
+		
+		for (int i = 0; i < alto; i++){
+			for (int j = 0; j < ancho; j++){
+				int color = Math.abs(get(i, j));
 				Imagen.setPixel(norm, i, j, color);
 			}
 		}

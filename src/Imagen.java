@@ -37,13 +37,12 @@ public class Imagen {
 				
 				int color = aplicarFiltro(im, matriz, i, j);
 				mat.set(i, j, color);
-				//setPixel(nueva, i, j, color);
 				
 			}
 		}
 		
 		// Normalizar
-		ImagePlus nueva = mat.getNormalizado();
+		ImagePlus nueva = mat.getNormalizadoLineal();
 		
 		// Devolver imagen nueva
 		return nueva;

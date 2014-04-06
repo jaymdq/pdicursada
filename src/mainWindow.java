@@ -637,9 +637,9 @@ public class mainWindow {
 		*/
 		
 		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(3, new int[][]{
-				{1, 1, 1}, 
-				{1, 1, 1}, 
-				{1, 1, 1}}));
+				{-1, 0, 1}, 
+				{-1, 1, 1}, 
+				{-1, 0, 1}}));
 		
 //		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(5, new int[][]{
 //				{1, 1, 1, 1, 1}, 
