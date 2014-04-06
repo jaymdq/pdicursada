@@ -10,11 +10,6 @@ public class Imagen {
 		im.getProcessor().setColor(color);
 		im.getProcessor().drawDot(y, x);
 		
-//		if (x == 223 && y == 236){
-//			System.out.println("Stop");
-//			int pix = getPixel(im, x, y);
-//		}
-		
 	}
 	
 	// Obtener la intensidad de un pixel (x,y)
@@ -32,17 +27,23 @@ public class Imagen {
 		int radio = matriz.getRadio();
 		
 		// Crear imagen de resultado
-		ImagePlus nueva = NewImage.createImage("nueva", ancho, alto, 1, 8, 0);
+		
+		//ImagePlus nueva = NewImage.createImage("nueva", ancho, alto, 1, 8, 0);
+		MatrizImagen mat = new MatrizImagen(alto, ancho);
 		
 		// Recorrer imagen (excepto bordes)
 		for (int i = radio; i < alto - radio; i++){
 			for (int j = radio; j < ancho - radio; j++){
 				
 				int color = aplicarFiltro(im, matriz, i, j);
-				setPixel(nueva, i, j, color);
+				mat.set(i, j, color);
+				//setPixel(nueva, i, j, color);
 				
 			}
 		}
+		
+		// Normalizar
+		ImagePlus nueva = mat.getNormalizado();
 		
 		// Devolver imagen nueva
 		return nueva;
@@ -54,7 +55,7 @@ public class Imagen {
 		int tam = matriz.getTam();
 		int radio = matriz.getRadio();
 		int acumulador = 0;
-		int normalizacion = tam * tam;
+		//int normalizacion = tam * tam;
 		
 		// Recorrer matriz de convolucion
 		for (int x = 0; x < tam; x++){
@@ -64,7 +65,10 @@ public class Imagen {
 		}
 		
 		// Devolver valor normalizado
-		return acumulador / normalizacion;
+		//return acumulador / normalizacion;
+		return acumulador;
 	}
+	
+	
 	
 }

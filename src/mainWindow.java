@@ -636,12 +636,17 @@ public class mainWindow {
 		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
 		*/
 		
-		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(5, new int[][]{
-				{1, 1, 1, 1, 1}, 
-				{1, 1, 1, 1, 1}, 
-				{1, 1, 1, 1, 1}, 
-				{1, 1, 1, 1, 1}, 
-				{1, 1, 1, 1, 1}}));
+		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(3, new int[][]{
+				{1, 1, 1}, 
+				{1, 1, 1}, 
+				{1, 1, 1}}));
+		
+//		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(5, new int[][]{
+//				{1, 1, 1, 1, 1}, 
+//				{1, 1, 1, 1, 1}, 
+//				{1, 1, 1, 1, 1}, 
+//				{1, 1, 1, 1, 1}, 
+//				{1, 1, 1, 1, 1}}));
 		
 		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
 		
