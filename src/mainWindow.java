@@ -70,6 +70,14 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 
+import transformacion.TAumentoIntensidad;
+import transformacion.TNegativo;
+import transformacion.TRealceOscuros;
+import transformacion.TUmbralado;
+import javax.swing.JScrollBar;
+import java.awt.event.AdjustmentListener;
+import java.awt.event.AdjustmentEvent;
+
 
 public class mainWindow {
 
@@ -91,6 +99,7 @@ public class mainWindow {
 	private ImagePlus im5;
 	private ImagePlus im5trabajo;
 	private JLabel Imagen5;
+	private JScrollBar scrollBar;
 	
 
 	/**
@@ -177,6 +186,20 @@ public class mainWindow {
 				cargarImagen5();
 			}
 		});
+		
+		scrollBar = new JScrollBar();
+		scrollBar.addAdjustmentListener(new AdjustmentListener() {
+			public void adjustmentValueChanged(AdjustmentEvent arg0) {
+				if (im5 != null){
+					im5trabajo = Imagen.aplicarTransformacion(im5, new TUmbralado(scrollBar.getValue(), 100, 255));				
+					Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));					
+				}
+			}
+		});
+		scrollBar.setBlockIncrement(1);
+		scrollBar.setMaximum(255);
+		scrollBar.setOrientation(JScrollBar.HORIZONTAL);
+		panel_3.add(scrollBar);
 		btn5cargar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		panel_3.add(btn5cargar);
 		
@@ -592,7 +615,7 @@ public class mainWindow {
 		/*im5trabajo.setImage(im5.getImage());
 		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));*/
 		
-		Histograma hist = new Histograma(im5);
+		Histograma hist = new Histograma(im5trabajo);
 		Imagen5.setIcon(new ImageIcon(hist.getHistograma().getImage()));
 	}
 	
@@ -636,10 +659,10 @@ public class mainWindow {
 		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
 		*/
 		
-		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(3, new int[][]{
-				{-1, 0, 1}, 
-				{-1, 1, 1}, 
-				{-1, 0, 1}}));
+//		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(3, new int[][]{
+//				{0, 1, 0}, 
+//				{1, -4, 1}, 
+//				{0, 1, 0}}));
 		
 //		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(5, new int[][]{
 //				{1, 1, 1, 1, 1}, 
@@ -648,6 +671,11 @@ public class mainWindow {
 //				{1, 1, 1, 1, 1}, 
 //				{1, 1, 1, 1, 1}}));
 		
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TNegativo());
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TUmbralado(scrollBar.getValue(), 30, 255));
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TAumentoIntensidad(55));
+		im5trabajo = Imagen.aplicarTransformacion(im5, new TRealceOscuros());
+				
 		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
 		
 	}

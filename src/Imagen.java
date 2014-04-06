@@ -1,3 +1,4 @@
+import transformacion.TransformacionPunto;
 import ij.ImagePlus;
 import ij.gui.NewImage;
 
@@ -42,7 +43,7 @@ public class Imagen {
 		}
 		
 		// Normalizar
-		ImagePlus nueva = mat.getNormalizadoLineal();
+		ImagePlus nueva = mat.getNormalizadoAbsoluto();
 		
 		// Devolver imagen nueva
 		return nueva;
@@ -68,6 +69,28 @@ public class Imagen {
 		return acumulador;
 	}
 	
-	
+	// Aplicar un filtro a una imagen completa
+	public static ImagePlus aplicarTransformacion(ImagePlus im, TransformacionPunto transformacion){
+		
+		int ancho = im.getWidth();
+		int alto = im.getHeight();
+		
+		// Crear imagen de resultado		
+		ImagePlus nueva = NewImage.createImage("nueva", ancho, alto, 1, 8, 0);
+		
+		// Recorrer imagen (excepto bordes)
+		for (int i = 0; i < alto; i++){
+			for (int j = 0; j < ancho; j++){
+				
+				int color = getPixel(im, i, j);
+				color = transformacion.getCalculado(color);
+				setPixel(nueva, i, j, color);			
+				
+			}
+		}
+		
+		// Devolver imagen nueva
+		return nueva;
+	}
 	
 }
