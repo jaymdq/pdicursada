@@ -2,10 +2,10 @@ package transformacion;
 
 public abstract class TransformacionPunto {
 
-	private int[] funcion = new int[256];
+	protected int[] funcion = new int[256];
 	
 	public TransformacionPunto(){
-		calcular();
+		//calcular();
 	}
 
 	// Calcular el resultado de la transformacion para un valor de intensidad
@@ -13,10 +13,10 @@ public abstract class TransformacionPunto {
 	
 	// Calcular la funcion completa de transformacion
 	public void calcular(){
+		System.out.println("Calculando");
 		for (int i = 0; i < 256; i++){
 			funcion[i] = get(i);
 		}
-		System.out.println("Calculando");
 	}
 	
 	// Obtener transformacion de un valor de intensidad

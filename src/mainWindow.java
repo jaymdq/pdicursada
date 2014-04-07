@@ -30,7 +30,6 @@ import javax.swing.border.BevelBorder;
 
 import java.awt.FlowLayout;
 
-import Filtros.FiltroBmp;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -47,6 +46,10 @@ import javax.swing.JSplitPane;
 import javax.swing.JLayeredPane;
 
 import com.jgoodies.forms.factories.FormFactory;
+
+import engine.Histograma;
+import engine.Imagen;
+import filtro.FiltroBmp;
 
 import javax.swing.BoxLayout;
 
@@ -70,9 +73,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 
+import transformacion.TEcualizacionH;
+import transformacion.TLineal;
 import transformacion.TAumentoIntensidad;
+import transformacion.TExponencial;
 import transformacion.TNegativo;
-import transformacion.TRealceOscuros;
+import transformacion.TLogaritmica;
 import transformacion.TUmbralado;
 import javax.swing.JScrollBar;
 import java.awt.event.AdjustmentListener;
@@ -673,8 +679,11 @@ public class mainWindow {
 		
 //		im5trabajo = Imagen.aplicarTransformacion(im5, new TNegativo());
 //		im5trabajo = Imagen.aplicarTransformacion(im5, new TUmbralado(scrollBar.getValue(), 30, 255));
-//		im5trabajo = Imagen.aplicarTransformacion(im5, new TAumentoIntensidad(55));
-		im5trabajo = Imagen.aplicarTransformacion(im5, new TRealceOscuros());
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TLogaritmica(55));
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TRealceOscuros());
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TExponencial(1.5));
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TLineal(100, 200, 0, 255));
+		im5trabajo = Imagen.aplicarTransformacion(im5, new TEcualizacionH(new Histograma(im5)));
 				
 		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
 		

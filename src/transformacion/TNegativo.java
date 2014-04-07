@@ -10,6 +10,10 @@ package transformacion;
 
 public class TNegativo extends TransformacionPunto {
 	
+	public TNegativo(){
+		calcular();
+	}
+	
 	@Override
 	protected int get(int i) {
 		return 255 - i;

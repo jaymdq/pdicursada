@@ -1,6 +1,6 @@
+package engine;
 import ij.ImagePlus;
 import ij.gui.NewImage;
-
 
 public class Histograma {
 
@@ -18,6 +18,14 @@ public class Histograma {
 	public void cargarImagen(ImagePlus im) {
 		this.im = im;
 		update();
+	}
+	
+	public int getValue(int i){
+		return valores[i];
+	}
+	
+	public int getPixelCant(){
+		return im.getWidth() * im.getHeight();
 	}
 	
 	public ImagePlus getHistograma() {
