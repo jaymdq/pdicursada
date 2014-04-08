@@ -1,10 +1,21 @@
 package engine;
+import java.io.File;
+
 import transformacion.TransformacionPunto;
 import ij.ImagePlus;
 import ij.gui.NewImage;
+import ij.io.FileSaver;
 
 
 public class Imagen {
+	
+	public static ImagePlus abrirImagen(String path){
+		return new ImagePlus(path);
+	}
+	
+	public static void guardarImagen(ImagePlus im, String path){
+		(new FileSaver(im)).saveAsJpeg(path);
+	}
 
 	// Setear la intensidad de un pixel (x,y)
 	public static void setPixel (ImagePlus im, int x, int y, int color){
@@ -85,6 +96,34 @@ public class Imagen {
 				
 				int color = getPixel(im, i, j);
 				color = transformacion.getCalculado(color);
+				setPixel(nueva, i, j, color);			
+				
+			}
+		}
+		
+		// Devolver imagen nueva
+		return nueva;
+	}
+
+	public static ImagePlus trasladar(ImagePlus im, double despI, double despJ) {
+		int ancho = im.getWidth();
+		int alto = im.getHeight();
+		
+		int iEnt = (int) Math.round(despI), jEnt = (int) Math.round(despJ);
+		double alpha = despI - iEnt, beta = despJ - jEnt;
+		
+		// Crear imagen de resultado		
+		ImagePlus nueva = NewImage.createImage("nueva", ancho, alto, 1, 8, 0);
+		
+		// Recorrer imagen (excepto bordes)
+		for (int i = 0; i < alto; i++){
+			for (int j = 0; j < ancho; j++){
+				
+				int color = (int) ( getPixel(im, i - iEnt, j - jEnt)         * (1 - alpha) * (1 - beta)) + 
+						    (int) ( getPixel(im, i - iEnt, j - jEnt + 1)     * (alpha)     * (1 - beta)) +
+						    (int) ( getPixel(im, i - iEnt + 1, j - jEnt)     * (1 - alpha) * (beta))     +
+						    (int) ( getPixel(im, i - iEnt + 1, j - jEnt + 1) * (alpha)     * (beta));
+				
 				setPixel(nueva, i, j, color);			
 				
 			}

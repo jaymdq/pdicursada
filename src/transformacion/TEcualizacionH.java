@@ -21,6 +21,7 @@ public class TEcualizacionH extends TransformacionPunto {
 	
 	@Override
 	protected int get(int i) {
+		// TODO Verificar valores de salida
 		if (i == 0)
 			return h.getValue(i);
 		

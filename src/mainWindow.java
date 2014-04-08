@@ -49,6 +49,7 @@ import com.jgoodies.forms.factories.FormFactory;
 
 import engine.Histograma;
 import engine.Imagen;
+import engine.MatrizConvolucion;
 import filtro.FiltroBmp;
 
 import javax.swing.BoxLayout;
@@ -83,11 +84,12 @@ import transformacion.TUmbralado;
 import javax.swing.JScrollBar;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.AdjustmentEvent;
+import javax.swing.JTextField;
 
 
 public class mainWindow {
 
-	private JFrame frame;
+	private JFrame frmProcesamientoDigitalDe;
 	private int paso = 1;
 	private int colores3 = 256;
 	private JRadioButton r128;
@@ -105,7 +107,8 @@ public class mainWindow {
 	private ImagePlus im5;
 	private ImagePlus im5trabajo;
 	private JLabel Imagen5;
-	private JScrollBar scrollBar;
+	private JTextField ej5ancho;
+	private JTextField ej5alto;
 	
 
 	/**
@@ -116,7 +119,7 @@ public class mainWindow {
 			public void run() {
 				try {
 					mainWindow window = new mainWindow();
-					window.frame.setVisible(true);
+					window.frmProcesamientoDigitalDe.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -138,18 +141,18 @@ public class mainWindow {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setFont(new Font("Verdana", Font.PLAIN, 14));
-		frame.setResizable(false);
-		frame.setTitle("Procesamiento Digital De Im\u00E1genes - CAIMMI, Brian");
-		int ancho = frame.getToolkit().getScreenSize().width;
-		int alto = frame.getToolkit().getScreenSize().height;
-		frame.setBounds(0,0,ancho - 100, alto - 100);
-		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmProcesamientoDigitalDe = new JFrame();
+		frmProcesamientoDigitalDe.setFont(new Font("Verdana", Font.PLAIN, 14));
+		frmProcesamientoDigitalDe.setResizable(false);
+		frmProcesamientoDigitalDe.setTitle("Procesamiento Digital De Im\u00E1genes - CAIMMI, Brian - ROCHA Hern\u00E1n");
+		int ancho = frmProcesamientoDigitalDe.getToolkit().getScreenSize().width;
+		int alto = frmProcesamientoDigitalDe.getToolkit().getScreenSize().height;
+		frmProcesamientoDigitalDe.setBounds(0,0,ancho - 100, alto - 100);
+		frmProcesamientoDigitalDe.setLocationRelativeTo(null);
+		frmProcesamientoDigitalDe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JMenuBar menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		frmProcesamientoDigitalDe.setJMenuBar(menuBar);
 		
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
@@ -157,7 +160,7 @@ public class mainWindow {
 		JTabbedPane tabsPane = new JTabbedPane(JTabbedPane.TOP);
 		tabsPane.setForeground(Color.BLACK);
 		tabsPane.setBackground(Color.GRAY);
-		frame.getContentPane().add(tabsPane, BorderLayout.CENTER);
+		frmProcesamientoDigitalDe.getContentPane().add(tabsPane, BorderLayout.CENTER);
 		
 		JPanel inPane1 = new JPanel();
 		inPane1.setBackground(new Color(255, 255, 102));
@@ -172,12 +175,15 @@ public class mainWindow {
 
 		JPanel inPane4 = new JPanel();
 		inPane4.setBackground(new Color(255, 255, 102));
-		inPane3.setBackground(new Color(255, 255, 102));
+		
+		JPanel inPane5 = new JPanel();
+		inPane5.setBackground(new Color(255, 255, 102));
 		
 		tabsPane.addTab("Ej. 1", inPane1);
 		tabsPane.addTab("Ej. 3", inPane2);
 		tabsPane.addTab("Ej. 4", inPane3);
 		tabsPane.addTab("Ej. 5", inPane4);
+		tabsPane.addTab("Ej. 6", inPane5);;
 		inPane4.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_3 = new JPanel();
@@ -192,20 +198,6 @@ public class mainWindow {
 				cargarImagen5();
 			}
 		});
-		
-		scrollBar = new JScrollBar();
-		scrollBar.addAdjustmentListener(new AdjustmentListener() {
-			public void adjustmentValueChanged(AdjustmentEvent arg0) {
-				if (im5 != null){
-					im5trabajo = Imagen.aplicarTransformacion(im5, new TUmbralado(scrollBar.getValue(), 100, 255));				
-					Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));					
-				}
-			}
-		});
-		scrollBar.setBlockIncrement(1);
-		scrollBar.setMaximum(255);
-		scrollBar.setOrientation(JScrollBar.HORIZONTAL);
-		panel_3.add(scrollBar);
 		btn5cargar.setFont(new Font("Tahoma", Font.BOLD, 16));
 		panel_3.add(btn5cargar);
 		
@@ -224,8 +216,32 @@ public class mainWindow {
 			resetear5();
 			}
 		});
+		
+		JButton genHistograma = new JButton("Histograma");
+		genHistograma.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				
+				
+				Histograma hist = new Histograma(im5trabajo);
+				Imagen5.setIcon(new ImageIcon(hist.getHistograma().getImage()));
+				
+			}
+		});
+		genHistograma.setFont(new Font("Tahoma", Font.BOLD, 16));
+		panel_3.add(genHistograma);
 		btn5resetear.setFont(new Font("Tahoma", Font.BOLD, 16));
 		panel_3.add(btn5resetear);
+		
+		ej5ancho = new JTextField();
+		ej5ancho.setText("80");
+		panel_3.add(ej5ancho);
+		ej5ancho.setColumns(10);
+		
+		ej5alto = new JTextField();
+		ej5alto.setText("60");
+		panel_3.add(ej5alto);
+		ej5alto.setColumns(10);
 		
 		Imagen5 = new JLabel("");
 		Imagen5.setHorizontalAlignment(SwingConstants.CENTER);
@@ -608,34 +624,36 @@ public class mainWindow {
 			im5trabajo = new ImagePlus(file.getAbsolutePath());
 			Imagen5.setIcon(new ImageIcon(im5.getImage()));
 			
-		}*/
+		}
 		
-		im5 = new ImagePlus("prueba.jpg");
-		im5trabajo = new ImagePlus("prueba.jpg");
-		Imagen5.setIcon(new ImageIcon(im5.getImage()));
+		*/
+		im5 = Imagen.abrirImagen("prueba.jpg");
+		im5trabajo = Imagen.abrirImagen("prueba.jpg");
+		im5trabajo = Imagen.trasladar(im5, -15.2, 40.7);
+		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
 		
 
 	}
 
 	protected void resetear5() {
-		/*im5trabajo.setImage(im5.getImage());
-		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));*/
-		
+		im5trabajo.setImage(im5.getImage());
+		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
+		/*
 		Histograma hist = new Histograma(im5trabajo);
 		Imagen5.setIcon(new ImageIcon(hist.getHistograma().getImage()));
+		*/
 	}
 	
 	protected void procesar5() {
-		/*
-
-		ImagePlus im = null;
-		im = NewImage.createImage("Imagen5", 640, 480, 1, 8, 0);
 		
+		ImagePlus im = null;
 		int ancho = 640;
 		int alto = 480;
+		im = NewImage.createImage("Imagen5", ancho, alto, 1, 8, 0);
 		
-		int anchoN = 800;
-		int altoN = 600;
+		
+		int anchoN = Integer.parseInt( ej5ancho.getText());
+		int altoN = Integer.parseInt( ej5alto.getText());
 		
 		double proporcion = ancho / anchoN;
 				
@@ -663,12 +681,17 @@ public class mainWindow {
 		
 		im5trabajo = im;
 		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
-		*/
+		
 		
 //		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(3, new int[][]{
-//				{0, 1, 0}, 
-//				{1, -4, 1}, 
-//				{0, 1, 0}}));
+//				{1, 1, 1}, 
+//				{1, -9, 1}, 
+//				{1, 1, 1}}));
+		
+//		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(3, new int[][]{
+//		{1, 1, 1}, 
+//		{0, -3, 0}, 
+//		{0, 0, 0}}));
 		
 //		im5trabajo = Imagen.aplicarFiltro(im5, new MatrizConvolucion(5, new int[][]{
 //				{1, 1, 1, 1, 1}, 
@@ -679,12 +702,13 @@ public class mainWindow {
 		
 //		im5trabajo = Imagen.aplicarTransformacion(im5, new TNegativo());
 //		im5trabajo = Imagen.aplicarTransformacion(im5, new TUmbralado(scrollBar.getValue(), 30, 255));
-//		im5trabajo = Imagen.aplicarTransformacion(im5, new TLogaritmica(55));
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TLogaritmica());
 //		im5trabajo = Imagen.aplicarTransformacion(im5, new TRealceOscuros());
-//		im5trabajo = Imagen.aplicarTransformacion(im5, new TExponencial(1.5));
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TExponencial(2.5));
 //		im5trabajo = Imagen.aplicarTransformacion(im5, new TLineal(100, 200, 0, 255));
-		im5trabajo = Imagen.aplicarTransformacion(im5, new TEcualizacionH(new Histograma(im5)));
-				
+//		im5trabajo = Imagen.aplicarTransformacion(im5, new TEcualizacionH(new Histograma(im5)));
+//		Imagen.guardarImagen(im5trabajo, "nueva.jpg");
+		
 		Imagen5.setIcon(new ImageIcon(im5trabajo.getImage()));
 		
 	}

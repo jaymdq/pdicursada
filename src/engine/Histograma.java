@@ -39,7 +39,7 @@ public class Histograma {
 		}
 		
 		// Dibujar lineas
-		int altoH = 200;
+		int altoH = 400;
 		ImagePlus hist = NewImage.createImage("hist", 256, altoH, 1, 8, 0);		
 		hist.getProcessor().setColor(0);
 		
